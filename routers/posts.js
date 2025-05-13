@@ -1,7 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
-const posts = [
+//  * data
+
+let posts = [
   {
     id: 1,
     title: "Ciambellone",
@@ -55,13 +57,20 @@ const posts = [
 
 // # index
 router.get("/", (req, res) => {
-  res.json("Lettura della lista di post");
+  res.json({
+    description: "Lettura della lista di post",
+    data: posts,
+  });
 });
 
 //  # show
 router.get("/:id", (req, res) => {
   const id = parseInt(req.params.id);
-  res.json("Lettura del post " + id);
+  const post = posts.find((currentPost) => currentPost.id === id);
+  res.json({
+    description: "Lettura del post " + id,
+    data: post,
+  });
 });
 
 // # store
@@ -72,19 +81,26 @@ router.post("/", (req, res) => {
 // # updare
 router.put("/:id", (req, res) => {
   const id = parseInt(req.params.id);
+
   res.json("Sostituzione del post " + id);
 });
 
 //  # modify
 router.patch("/:id", (req, res) => {
   const id = parseInt(req.params.id);
+
   res.json("Modifica del post " + id);
 });
 
 //  # destroy
 router.delete("/:id", (req, res) => {
   const id = parseInt(req.params.id);
-  res.json("Eliminazione del post " + id);
+  posts = posts.filter((currentPost) => currentPost.id !== id);
+
+  res.json({
+    description: "Eliminazione del post " + id,
+    data: posts,
+  });
 });
 
 module.exports = router;
